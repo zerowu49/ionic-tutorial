@@ -32,4 +32,10 @@ export class ContactsService {
       return contact.id === contactId;
     })};
   }
+
+  deleteContact(contactId: string){
+    this.contacts = this.contacts.filter(contact => {
+      return contact.id !== contactId
+    })
+  }
 }

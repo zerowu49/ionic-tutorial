@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: ContactsPage
+  },
+  {
+    path: ':contactId',
+    loadChildren: () => import('./contact-detail/contact-detail.module').then( m => m.ContactDetailPageModule)
   }
 ];
 

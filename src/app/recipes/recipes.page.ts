@@ -16,9 +16,11 @@ export class RecipesPage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+  
+  ionViewWillEnter(){
     this.recipes = this.recipesService.getAllRecipes();
   }
-
   
   onContact(){
     this.router.navigateByUrl('/contacts')

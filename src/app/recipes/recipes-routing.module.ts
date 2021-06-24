@@ -6,12 +6,24 @@ import { RecipesPage } from './recipes.page';
 const routes: Routes = [
   {
     path: '',
-    component: RecipesPage
+    redirectTo: '/recipes/tabs/discover',
+    pathMatch: 'full'
   },
   {
-    path: ':recipeId',
-    loadChildren: () => import('./recipe-detail/recipe-detail.module').then( m => m.RecipeDetailPageModule)
-  }
+    path: 'tabs',
+    component: RecipesPage,
+    children: [
+      {
+        path: 'discover',
+        loadChildren: () => import('./discover/discover.module').then( m => m.DiscoverPageModule)
+      },
+      {
+        path: 'creations',
+        loadChildren: () => import('./creations/creations.module').then( m => m.CreationsPageModule)
+      },
+    ]
+  },
+  
 ];
 
 @NgModule({

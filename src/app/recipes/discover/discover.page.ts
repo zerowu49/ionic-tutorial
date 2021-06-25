@@ -10,6 +10,7 @@ import {IonItemSliding} from '@ionic/angular';
 })
 export class DiscoverPage implements OnInit {
   recipes: Recipe[];
+  data2 = "hehe"
   constructor(private recipesService: RecipesService) { }
 
   ngOnInit() {

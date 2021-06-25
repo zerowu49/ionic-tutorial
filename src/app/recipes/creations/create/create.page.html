@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Create</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="tertiary">
+  <form [formGroup]="form">
+    <ion-list>
+      <ion-item color="secondary">
+        <ion-label position="floating">ID</ion-label>
+        <ion-input type="text" formControlName="id"></ion-input>
+      </ion-item>
+      <ion-item color="secondary">
+        <ion-label position="floating">Title</ion-label>
+        <ion-input type="text" formControlName="title"></ion-input>
+      </ion-item>
+      <ion-item color="secondary">
+        <ion-label position="floating">Image URL</ion-label>
+        <ion-input type="text" formControlName="imageUrl"></ion-input>
+      </ion-item>
+      <ion-item color="secondary">
+        <ion-label position="floating">Ingredients (Separate with comma)</ion-label>
+        <ion-input type="text" formControlName="ingredients"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button (click)="onSubmit()">Submit</ion-button>
+  </form>
+</ion-content>

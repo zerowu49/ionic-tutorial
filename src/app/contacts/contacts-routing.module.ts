@@ -11,7 +11,17 @@ const routes: Routes = [
   {
     path: ':contactId',
     loadChildren: () => import('./contact-detail/contact-detail.module').then( m => m.ContactDetailPageModule)
+  },
+  {
+    path: 'components/add-contact',
+    loadChildren: () => import('./components/add-contact/add-contact.module').then( m => m.AddContactPageModule)
+  },
+  {
+    path: 'components/edit-contact/:contactId',
+    loadChildren: () => import('./components/edit-contact/edit-contact.module').then( m => m.EditContactPageModule)
   }
+
+
 ];
 
 @NgModule({

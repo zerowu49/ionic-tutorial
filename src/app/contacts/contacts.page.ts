@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonItemSliding, ModalController } from '@ionic/angular';
-import { ModalAddContactComponent } from './components/modal-add-contact.component';
+import { ModalAddContactComponent } from './components/modal-add-contact/modal-add-contact.component';
 import { Contact } from './contact.model';
 import { ContactsService } from './contacts.service';
 

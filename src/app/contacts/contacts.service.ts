@@ -33,6 +33,30 @@ export class ContactsService {
     })};
   }
 
+  addContact(newId: string, newName: string, newPhoto: string, newTelephone: string[], newEmail: string[]) {
+    this.contacts.push(
+      {
+        id: newId,
+        name: newName,
+        photo: newPhoto,
+        telephone: newTelephone,
+        email: newEmail
+      }
+    );
+    console.log(newId + " has been added.")
+  }
+
+  editContact(editContact: Contact) {
+    this.contacts.forEach((contact) => {
+      if (contact.id === editContact.id) {
+        contact.name = editContact.name;
+        contact.photo = editContact.photo;
+        contact.email = editContact.email;
+        contact.telephone = editContact.telephone;
+      }
+    });
+  }
+
   deleteContact(contactId: string){
     this.contacts = this.contacts.filter(contact => {
       return contact.id !== contactId

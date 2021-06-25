@@ -1,9 +1,9 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/contacts"></ion-back-button>
     </ion-buttons>
-    <ion-title>Contact Detail</ion-title>
+    <ion-title color="secondary">Contact Detail</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="presentAlert()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -12,34 +12,42 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="tertiary">
   <ion-grid fixed>
     <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-avatar slot="start">
-            <ion-img [src]="loadedContact.photo"></ion-img>
-          </ion-avatar>
-          <ion-label>
-            {{ loadedContact.name }}
-          </ion-label>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-list>
-          <ion-item *ngFor="let email of loadedContact.email">
-            <ion-icon slot="start" name="mail-outline"></ion-icon>
-            <ion-label>{{email}}</ion-label>
+      <ion-col size-md="8" size-xs="12">
+        <ion-card color="secondary">
+          <ion-item color="secondary">
+            <ion-avatar slot="start">
+              <ion-img [src]="loadedContact.photo"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              {{ loadedContact.name }}
+            </ion-label>
           </ion-item>
-        </ion-list>
-        <ion-list>
-          <ion-item *ngFor="let telp of loadedContact.telephone">
-            <ion-icon slot="start" name="call-outline"></ion-icon>
-            <ion-label>{{telp}}</ion-label>
-          </ion-item>
-        </ion-list>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col *ngFor="let email of loadedContact.email">
+                  <ion-item color="secondary">
+                    <ion-icon slot="start" name="mail-outline"></ion-icon>
+                    <ion-label>{{email}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-grid>
+              <ion-row>
+                <ion-col *ngFor="let telp of loadedContact.telephone">
+                  <ion-item color="secondary">
+                    <ion-icon slot="start" name="call-outline"></ion-icon>
+                    <ion-label>{{telp}}</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>

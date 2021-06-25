@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Add New Contact</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title color="secondary">Add New Contact</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onCancel()">
         <ion-icon name="close"></ion-icon>
@@ -10,20 +10,22 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content class="ion-padding" color="tertiary">
   <ion-list>
-    <ion-item>
+    <ion-item color="secondary">
       <ion-label position="floating">Nama</ion-label>
       <ion-input></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item color="secondary">
       <ion-label position="floating">Email</ion-label>
       <ion-input></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item color="secondary">
       <ion-label position="floating">Nomor Telepon</ion-label>
       <ion-input></ion-input>
     </ion-item>
   </ion-list>
-  <ion-button color="primary" (click)="addContact()">Save Contact</ion-button>
+  <div class="ion-text-center ion-padding-vertical" >
+    <ion-button  color="primary" (click)="addContact()">Save Contact</ion-button>
+  </div>
 </ion-content>

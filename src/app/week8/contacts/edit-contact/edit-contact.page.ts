@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
 
@@ -10,9 +11,10 @@ import { ContactsService } from '../contacts.service';
   templateUrl: './edit-contact.page.html',
   styleUrls: ['./edit-contact.page.scss'],
 })
-export class EditContactPage implements OnInit {
+export class EditContactPage implements OnInit, OnDestroy {
   form: FormGroup
   loadedContact: Contact
+  private loadedContactSub: Subscription
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -29,16 +31,15 @@ export class EditContactPage implements OnInit {
           return
         }
         const contactId = paramMap.get('contactId')
-        this.loadedContact = this.contactsService.getContact(contactId)
+        this.loadedContactSub = this.contactsService.getContact(contactId)
+          .subscribe(contact => {
+            this.loadedContact = contact
+          })
       }
     )
 
     this.form = new FormGroup({
       name: new FormControl(this.loadedContact.name, {
-        updateOn: 'change',
-        validators: [Validators.required]
-      }),
-      photoUrl: new FormControl(this.loadedContact.photo, {
         updateOn: 'change',
         validators: [Validators.required]
       }),
@@ -61,13 +62,19 @@ export class EditContactPage implements OnInit {
     })
   }
 
+  
+  ngOnDestroy() {
+    if (this.loadedContactSub) {
+      this.loadedContactSub.unsubscribe();
+    }
+  }
+
   onSubmit(){
     const editContact = new Contact(
       this.loadedContact.id,
       this.form.value.name,
-      this.form.value.photoUrl,
       [this.form.value.email1, this.form.value.email2],
-      [this.form.value.telephone1, this.form.value.telephone2]
+      [this.form.value.telephone1, this.form.value.telephone2],
     );
     this.contactsService.editContact(editContact);
 
@@ -79,9 +86,9 @@ export class EditContactPage implements OnInit {
 
   async presentToast() {
     const toast = await this.toastCtrl.create({
-      message: 'Contact has been edited.',
+      message: 'Contact updated.',
       color: 'primary',
-      duration: 3000
+      duration: 5000
     });
 
     toast.present();
@@ -89,10 +96,13 @@ export class EditContactPage implements OnInit {
 
   async presentLoading() {
     const loading = await this.loadingCtrl.create({
-      message: 'Editing contact...',
+      message: 'Updating contact...',
       duration: 1500
     });
     await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
   }
 
 }

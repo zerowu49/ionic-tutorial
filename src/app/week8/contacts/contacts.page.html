@@ -18,9 +18,6 @@
         <ion-list>
           <ion-item-sliding *ngFor="let contact of contacts" #slidingItem>
             <ion-item color="secondary" [routerLink]="['./', contact.id]">
-              <ion-avatar slot="start">
-                <ion-img [src]="contact.photo"></ion-img>
-              </ion-avatar>
               <ion-label>{{ contact.name }}</ion-label>
               <ion-icon name="mail-outline"></ion-icon>
               <ion-text class="ion-margin-horizontal">{{ contact.email.length }}</ion-text>

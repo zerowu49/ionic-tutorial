@@ -26,13 +26,6 @@
         <ion-label>Name cannot be empty</ion-label>
       </ion-item>
       <ion-item color="secondary">
-        <ion-label position="floating">Photo URL</ion-label>
-        <ion-input type="text" ngModel name="photo" #photoCtrl="ngModel" required></ion-input>
-      </ion-item>
-      <ion-item color="secondary" *ngIf="!photoCtrl.valid && photoCtrl.touched">
-        <ion-label>Photo URL cannot be empty</ion-label>
-      </ion-item>
-      <ion-item color="secondary">
         <ion-label position="floating">Telephone 1</ion-label>
         <ion-input type="text" ngModel name="telephone1" #telephoneCtrl="ngModel" required></ion-input>
       </ion-item>

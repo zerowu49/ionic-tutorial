@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
 
@@ -9,8 +10,9 @@ import { ContactsService } from '../contacts.service';
   templateUrl: './contact-detail.page.html',
   styleUrls: ['./contact-detail.page.scss'],
 })
-export class ContactDetailPage implements OnInit {
+export class ContactDetailPage implements OnInit, OnDestroy {
   loadedContact: Contact
+  private loadedContactSub: Subscription
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -27,9 +29,18 @@ export class ContactDetailPage implements OnInit {
           return
         }
         const contactId = paramMap.get('contactId')
-        this.loadedContact = this.contactsService.getContact(contactId)
+        this.loadedContactSub = this.contactsService.getContact(contactId)
+          .subscribe(contact => {
+            this.loadedContact = contact
+          })
       }
     )
+  }
+
+  ngOnDestroy(){
+    if(this.loadedContactSub){
+      this.loadedContactSub.unsubscribe()
+    }
   }
 
   deleteContact(){

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Contact } from './contact.model';
 import { ContactsService } from './contacts.service';
 
@@ -9,9 +10,10 @@ import { ContactsService } from './contacts.service';
   templateUrl: './contacts.page.html',
   styleUrls: ['./contacts.page.scss'],
 })
-export class ContactsPage implements OnInit {
+export class ContactsPage implements OnInit, OnDestroy {
   contacts: Contact[];
   loadedContact: Contact;
+  private contactSub: Subscription
 
 
   constructor(
@@ -21,10 +23,16 @@ export class ContactsPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.contactSub = this.contactsService.getAllContacts()
+      .subscribe(contact => {
+        this.contacts = contact
+      })
   }
 
-  ionViewWillEnter(){
-    this.contacts = this.contactsService.getAllContacts();
+  ngOnDestroy(){
+    if(this.contactSub){
+      this.contactSub.unsubscribe()
+    }
   }
 
   fav(contact: Contact, slidingItem: IonItemSliding) {

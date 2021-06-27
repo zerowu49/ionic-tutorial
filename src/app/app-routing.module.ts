@@ -9,19 +9,19 @@ const routes: Routes = [
   },
   {
     path: 'students1',
-    loadChildren: () => import('./week8/students1/students1.module').then( m => m.Students1PageModule)
+    loadChildren: () => import('./week8/students1/students1.module').then(m => m.Students1PageModule)
   },
   {
     path: 'students2',
-    loadChildren: () => import('./week8/students2/students2.module').then( m => m.Students2PageModule)
+    loadChildren: () => import('./week8/students2/students2.module').then(m => m.Students2PageModule)
   },
   {
     path: 'students3',
-    loadChildren: () => import('./week8/students3/students3.module').then( m => m.Students3PageModule)
+    loadChildren: () => import('./week8/students3/students3.module').then(m => m.Students3PageModule)
   },
   {
     path: 'contacts',
-    loadChildren: () => import('./week8/contacts/contacts.module').then( m => m.ContactsPageModule)
+    loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsPageModule)
   },
 
 

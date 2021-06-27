@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
 
@@ -14,34 +15,53 @@ export class AddContactPage implements OnInit {
   constructor(
     private contactsService: ContactsService,
     private router: Router,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
   ) { }
 
   ngOnInit() {
   }
   
   onSubmit(form: NgForm){
-    console.log("onSubmit")
-    console.log(form)
-    if(!form.valid){
-      return
-    }
-
-    const id = form.value.id
-    const name = form.value.name
-    const telephone1 = form.value.telephone1
-    const telephone2 = form.value.telephone2
-    const email1 = form.value.email1
-    const email2 = form.value.email2
-
     const newContact = new Contact(
-      id, 
-      name, 
-      [telephone1, telephone2], 
-      [email1, email2]
+      null, 
+      form.value.name, 
+      [form.value.email1, form.value.email2],
+      [form.value.telephone1, form.value.telephone2], 
     )
 
-    this.contactsService.addContact(newContact)
-    this.router.navigateByUrl('/contacts')
+    console.log(newContact)
+
+    this.contactsService.addContact(newContact).subscribe(res => {
+      console.log(res)
+    })
   }
 
+  addContact(){
+    this.presentLoading().then(() => {
+      this.router.navigateByUrl('/contacts')
+      this.presentToast()
+    })
+  }
+
+  async presentToast(){
+    const toast = await this.toastCtrl.create({
+      message: "Contact has been added.",
+      duration: 3000,
+    })
+
+    toast.present()
+  }
+
+  async presentLoading(){
+    const loading = await this.loadingCtrl.create({
+      message: 'Adding new contact...',
+      duration: 2000,
+    })
+
+    await loading.present()
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  }
 }

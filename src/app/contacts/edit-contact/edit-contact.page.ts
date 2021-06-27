@@ -33,33 +33,33 @@ export class EditContactPage implements OnInit, OnDestroy {
         const contactId = paramMap.get('contactId')
         this.loadedContactSub = this.contactsService.getContact(contactId)
           .subscribe(contact => {
-            this.loadedContact = contact
+            this.loadedContact = new Contact(contact[0].id, contact[0].nama, [...contact[0].email.split(',')], [...contact[0].phone.split(',')]);
+            this.form = new FormGroup({
+              name: new FormControl(this.loadedContact.nama, {
+                updateOn: 'change',
+                validators: [Validators.required]
+              }),
+              telephone1: new FormControl(this.loadedContact.phone[0], {
+                updateOn: 'change',
+                validators: [Validators.required]
+              }),
+              telephone2: new FormControl(this.loadedContact.phone[1], {
+                updateOn: 'change',
+                validators: [Validators.required]
+              }),
+              email1: new FormControl(this.loadedContact.email[0], {
+                updateOn: 'change',
+                validators: [Validators.required]
+              }),
+              email2: new FormControl(this.loadedContact.email[1], {
+                updateOn: 'change',
+                validators: [Validators.required]
+              })
+            })
           })
       }
     )
 
-    this.form = new FormGroup({
-      name: new FormControl(this.loadedContact.name, {
-        updateOn: 'change',
-        validators: [Validators.required]
-      }),
-      telephone1: new FormControl(this.loadedContact.telephone[0], {
-        updateOn: 'change',
-        validators: [Validators.required]
-      }),
-      telephone2: new FormControl(this.loadedContact.telephone[1], {
-        updateOn: 'change',
-        validators: [Validators.required]
-      }),
-      email1: new FormControl(this.loadedContact.email[0], {
-        updateOn: 'change',
-        validators: [Validators.required]
-      }),
-      email2: new FormControl(this.loadedContact.email[1], {
-        updateOn: 'change',
-        validators: [Validators.required]
-      })
-    })
   }
 
   
@@ -76,7 +76,9 @@ export class EditContactPage implements OnInit, OnDestroy {
       [this.form.value.email1, this.form.value.email2],
       [this.form.value.telephone1, this.form.value.telephone2],
     );
-    this.contactsService.editContact(editContact);
+    this.contactsService.editContact(editContact).subscribe(res => {
+      console.log(res)
+    })
 
     this.presentLoading().then(() => {
       this.router.navigate(['/contacts']);

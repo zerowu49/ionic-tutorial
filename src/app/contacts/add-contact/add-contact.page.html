@@ -11,15 +11,7 @@
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <ion-list>
       <ion-item color="secondary">
-        <ion-label position="floating">ID</ion-label>
-        <ion-input type="text" ngModel name="id" #idCtrl="ngModel" required>
-        </ion-input>
-      </ion-item>
-      <ion-item color="secondary" *ngIf="!idCtrl.valid && idCtrl.touched">
-        <ion-label>ID cannot be empty</ion-label>
-      </ion-item>
-      <ion-item color="secondary">
-        <ion-label position="floating">Name</ion-label>
+        <ion-label position="floating">Nama</ion-label>
         <ion-input type="text" ngModel name="name" #nameCtrl="ngModel" required></ion-input>
       </ion-item>
       <ion-item color="secondary" *ngIf="!nameCtrl.valid && nameCtrl.touched">
@@ -49,9 +41,13 @@
       <ion-item color="secondary" *ngIf="!emailCtrl.valid && emailCtrl.touched">
         <ion-label>Email must be valid</ion-label>
       </ion-item>
-
-
     </ion-list>
-    <ion-button (click)="onSubmit(form)">Submit</ion-button>
+    <ion-button 
+      type="submit" 
+      expand="block" 
+      (click)="addContact()"
+      [disabled]="!form.valid">
+      Submit
+    </ion-button>
   </form>
 </ion-content>

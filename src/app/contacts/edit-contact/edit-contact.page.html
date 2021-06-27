@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="loadedContact">
   <ion-toolbar color="primary">
     <ion-buttons color="secondary" slot="start">
       <ion-back-button defaultHref="/contacts"></ion-back-button>
@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="tertiary">
+<ion-content color="tertiary" *ngIf="loadedContact && this.form" >
   <form [formGroup]="form">
     <ion-list>
       <ion-item color="secondary">
@@ -31,6 +31,6 @@
         <ion-input type="text" formControlName="email2"></ion-input>
       </ion-item>
     </ion-list>
-    <ion-button (click)="onSubmit()">Submit</ion-button>
+    <ion-button (click)="onSubmit()" [disabled]="!form.valid">Submit</ion-button>
   </form>
 </ion-content>

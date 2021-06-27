@@ -11,10 +11,8 @@ import { ContactsService } from './contacts.service';
   styleUrls: ['./contacts.page.scss'],
 })
 export class ContactsPage implements OnInit, OnDestroy {
-  contacts: Contact[];
-  loadedContact: Contact;
+  contacts: any;
   private contactSub: Subscription
-
 
   constructor(
     private contactsService: ContactsService,
@@ -23,8 +21,17 @@ export class ContactsPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // this.contactSub = this.contactsService.getAllContacts()
+    //   .subscribe(contact => {
+    //     console.log(contact)
+    //     this.contacts = contact
+    //   })
+  }
+
+  ionViewWillEnter(){
     this.contactSub = this.contactsService.getAllContacts()
       .subscribe(contact => {
+        console.log(contact)
         this.contacts = contact
       })
   }
@@ -37,7 +44,7 @@ export class ContactsPage implements OnInit, OnDestroy {
 
   fav(contact: Contact, slidingItem: IonItemSliding) {
     slidingItem.close();
-    console.log(contact.name, 'is set as priority contact');
+    console.log(contact.nama, 'is set as priority contact');
   }
 
   onFilterUpdate(event: Event) {

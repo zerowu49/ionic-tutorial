@@ -1,13 +1,13 @@
 export class Contact {
     id: string;
-    name: string;
-    telephone: string[];
+    nama: string;
+    phone: string[];
     email: string[];
 
-    constructor(id, name, email, telephone) {
+    constructor(id, nama, email, phone) {
         this.id = id;
-        this.name = name;
+        this.nama = nama;
         this.email = email;
-        this.telephone = telephone;
+        this.phone = phone;
     }
 }

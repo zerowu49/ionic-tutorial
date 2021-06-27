@@ -11,7 +11,7 @@ export class MahasiswaService {
   ) { }
 
   getAllStudents() {
-    return this.http.get('http://localhost/select.php')
+    return this.http.get('http://localhost/mahasiswa/select.php')
   }
 
   insertMhs(newMhs: any) {
@@ -22,11 +22,11 @@ export class MahasiswaService {
     }
 
     const data = JSON.stringify(mhs)
-    return this.http.post<any>('http://localhost/insert.php', data)
+    return this.http.post<any>('http://localhost/mahasiswa/insert.php', data)
   }
 
   deleteMhs(nim: string) {
     const data = JSON.stringify({ id: nim })
-    return this.http.post<any>('http://localhost/delete.php', data)
+    return this.http.post<any>('http://localhost/mahasiswa/delete.php', data)
   }
 }

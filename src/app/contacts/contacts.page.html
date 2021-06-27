@@ -15,14 +15,17 @@
           <ion-segment-button value="all">All Contacts</ion-segment-button>
           <ion-segment-button value="most-fav">Priority Contacts</ion-segment-button>
         </ion-segment>
-        <ion-list>
+        <ion-item *ngIf="!contacts" color="tertiary">
+          <ion-label>Tidak ada kontak</ion-label>
+        </ion-item>
+        <ion-list *ngIf="contacts">
           <ion-item-sliding *ngFor="let contact of contacts" #slidingItem>
             <ion-item color="secondary" [routerLink]="['./', contact.id]">
-              <ion-label>{{ contact.name }}</ion-label>
+              <ion-label>{{ contact.nama }}</ion-label>
               <ion-icon name="mail-outline"></ion-icon>
-              <ion-text class="ion-margin-horizontal">{{ contact.email.length }}</ion-text>
+              <ion-text class="ion-margin-horizontal">{{ contact.email.split(',').length }}</ion-text>
               <ion-icon name="call-outline"></ion-icon>
-              <ion-text class="ion-margin-horizontal">{{ contact.telephone.length }}</ion-text>
+              <ion-text class="ion-margin-horizontal">{{ contact.phone.split(',').length }}</ion-text>
             </ion-item>
         
             <ion-item-options side="end">
@@ -31,7 +34,6 @@
               </ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
-        
       </ion-list>
       </ion-col>
     </ion-row>

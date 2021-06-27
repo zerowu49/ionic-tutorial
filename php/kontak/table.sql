@@ -1,0 +1,1 @@
+CREATE TABLE `umn_if733_2020`.`kontak` ( `id` INT(11) NOT NULL , `nama` VARCHAR(50) NOT NULL , `phone` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL ) ENGINE = InnoDB;

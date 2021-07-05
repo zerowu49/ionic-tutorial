@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/index"></ion-back-button>
+    </ion-buttons>
+    <ion-title>create</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">NIM</ion-label>
+        <ion-input type="text" ngModel name="nim"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nama</ion-label>
+        <ion-input type="text" ngModel name="nama"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Prodi</ion-label>
+        <ion-input type="text" ngModel name="prodi"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button type="submit" color="primary" expand="block">Simpan</ion-button>
+  </form>
+</ion-content>

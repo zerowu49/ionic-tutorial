@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Contact } from './contact.model';
 import { ContactsService } from './contacts.service';
 
@@ -10,37 +11,35 @@ import { ContactsService } from './contacts.service';
   templateUrl: './contacts.page.html',
   styleUrls: ['./contacts.page.scss'],
 })
-export class ContactsPage implements OnInit, OnDestroy {
+export class ContactsPage implements OnInit {
   contacts: any;
   private contactSub: Subscription
 
   constructor(
     private contactsService: ContactsService,
     private router: Router,
-    
   ) { }
 
   ngOnInit() {
-    // this.contactSub = this.contactsService.getAllContacts()
-    //   .subscribe(contact => {
-    //     console.log(contact)
-    //     this.contacts = contact
-    //   })
-  }
-
-  ionViewWillEnter(){
-    this.contactSub = this.contactsService.getAllContacts()
+    this.contactsService.getAllContacts().snapshotChanges()
+      .pipe(
+        map(changes =>
+          changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+        )
+      )
       .subscribe(contact => {
         console.log(contact)
         this.contacts = contact
       })
   }
 
-  ngOnDestroy(){
-    if(this.contactSub){
-      this.contactSub.unsubscribe()
-    }
+  delete(event, key) {
+    console.log(key);
+    this.contactsService.deleteContact(key).then(res => {
+      console.log(res);
+    });
   }
+
 
   fav(contact: Contact, slidingItem: IonItemSliding) {
     slidingItem.close();
@@ -52,7 +51,7 @@ export class ContactsPage implements OnInit, OnDestroy {
     console.log(eventDetail);
     if (eventDetail.value === 'all') {
       console.log('Showing all contacts.');
-    }else {
+    } else {
       console.log('Showing priority contacts.');
     }
   }

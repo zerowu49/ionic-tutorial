@@ -10,15 +10,11 @@ const routes: Routes = [
   },
   {
     path: 'add-contact',
-    loadChildren: () => import('./add-contact/add-contact.module').then( m => m.AddContactPageModule)
-  },
-  {
-    path: ':contactId',
-    loadChildren: () => import('./contact-detail/contact-detail.module').then( m => m.ContactDetailPageModule)
+    loadChildren: () => import('./add-contact/add-contact.module').then(m => m.AddContactPageModule)
   },
   {
     path: 'edit-contact/:contactId',
-    loadChildren: () => import('./edit-contact/edit-contact.module').then( m => m.EditContactPageModule)
+    loadChildren: () => import('./edit-contact/edit-contact.module').then(m => m.EditContactPageModule)
   }
 ];
 
@@ -26,4 +22,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ContactsPageRoutingModule {}
+export class ContactsPageRoutingModule { }

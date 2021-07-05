@@ -13,7 +13,7 @@ export class EditPage implements OnInit {
   mahasiswa: any;
   key: string;
 
-  @ViewChild('f', null) f: NgForm;
+  @ViewChild('f', {}) f: NgForm;
 
   constructor(
     private activatedRoute: ActivatedRoute,

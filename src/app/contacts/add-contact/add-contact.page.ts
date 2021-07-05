@@ -21,30 +21,32 @@ export class AddContactPage implements OnInit {
 
   ngOnInit() {
   }
-  
-  onSubmit(form: NgForm){
+
+  onSubmit(form: NgForm) {
     const newContact = new Contact(
-      null, 
-      form.value.name, 
+      null,
+      form.value.name,
       [form.value.email1, form.value.email2],
-      [form.value.telephone1, form.value.telephone2], 
+      [form.value.telephone1, form.value.telephone2],
     )
 
     console.log(newContact)
 
-    this.contactsService.addContact(newContact).subscribe(res => {
+    this.contactsService.addContact(newContact).then(res => {
       console.log(res)
     })
+
+    form.reset()
   }
 
-  addContact(){
+  addContact() {
     this.presentLoading().then(() => {
       this.router.navigateByUrl('/contacts')
       this.presentToast()
     })
   }
 
-  async presentToast(){
+  async presentToast() {
     const toast = await this.toastCtrl.create({
       message: "Contact has been added.",
       duration: 3000,
@@ -53,7 +55,7 @@ export class AddContactPage implements OnInit {
     toast.present()
   }
 
-  async presentLoading(){
+  async presentLoading() {
     const loading = await this.loadingCtrl.create({
       message: 'Adding new contact...',
       duration: 2000,

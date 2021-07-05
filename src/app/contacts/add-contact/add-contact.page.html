@@ -2,7 +2,7 @@
   <ion-toolbar color="primary">
     <ion-title>Add Contact</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/contacts"></ion-back-button>
+      <ion-back-button defaultHref="/contacts/index"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -42,11 +42,7 @@
         <ion-label>Email must be valid</ion-label>
       </ion-item>
     </ion-list>
-    <ion-button 
-      type="submit" 
-      expand="block" 
-      (click)="addContact()"
-      [disabled]="!form.valid">
+    <ion-button type="submit" expand="block" (click)="addContact()" [disabled]="!form.valid">
       Submit
     </ion-button>
   </form>

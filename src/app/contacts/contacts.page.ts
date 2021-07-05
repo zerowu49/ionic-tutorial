@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { IonItemSliding } from '@ionic/angular';
+import { IonItemSliding, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 import { Contact } from './contact.model';
 import { ContactsService } from './contacts.service';
 
@@ -17,7 +17,8 @@ export class ContactsPage implements OnInit {
 
   constructor(
     private contactsService: ContactsService,
-    private router: Router,
+    private navCtrl: NavController,
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
@@ -33,11 +34,21 @@ export class ContactsPage implements OnInit {
       })
   }
 
-  delete(event, key) {
+  delete(key) {
     console.log(key);
-    this.contactsService.deleteContact(key).then(res => {
-      console.log(res);
+    this.authService.userDetails().subscribe(res => {
+      console.log('res', res);
+      if (res !== null) {
+        this.contactsService.deleteContact(key).then(res => {
+          console.log(res);
+        });
+      } else {
+        this.navCtrl.navigateBack('auth/login');
+      }
+    }, err => {
+      console.log('err', err);
     });
+    
   }
 
 

@@ -25,7 +25,7 @@
             <ion-item>
               <ion-label>{{ contact.nama }}</ion-label>
               <ion-button routerLink="/contacts/edit-contact/{{contact.key}}">EDIT</ion-button>
-              <ion-button (click)="delete($event, contact.key)">DELETE</ion-button>
+              <ion-button (click)="delete(contact.key)">DELETE</ion-button>
             </ion-item>
             <ion-item-options side="end">
               <ion-item-option (click)="fav(contact, slidingItem)">

@@ -1,31 +1,48 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {canActivate, redirectLoggedInTo, redirectUnauthorizedTo} from '@angular/fire/auth-guard';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['auth/login']);
+const redirectLoggedInToItems = () => redirectLoggedInTo(['contacts/index']);
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'contacts',
+    redirectTo: 'contacts/index',
     pathMatch: 'full'
   },
   {
     path: 'contacts',
+    redirectTo: 'contacts/index',
+    pathMatch: 'full'
+  },
+  {
+    path: 'contacts/index',
     loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsPageModule)
   },
   {
-    path: 'index',
-    loadChildren: () => import('./week10/index/index.module').then(m => m.IndexPageModule)
+    path: 'contacts/add-contact',
+    loadChildren: () => import('./contacts/add-contact/add-contact.module').then(m => m.AddContactPageModule),
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
-    path: 'week10/create',
-    loadChildren: () => import('./week10/create/create.module').then(m => m.CreatePageModule)
+    path: 'contacts/edit-contact/:contactId',
+    loadChildren: () => import('./contacts/edit-contact/edit-contact.module').then(m => m.EditContactPageModule),
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
-    path: 'week10/edit/:key',
-    loadChildren: () => import('./week10/edit/edit.module').then(m => m.EditPageModule)
+    path: 'auth/login',
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule),
+    ...canActivate(redirectLoggedInToItems)
   },
-
-
-
+  {
+    path: 'auth/register',
+    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'auth/dashboard',
+    loadChildren: () => import('./auth/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },
 ];
 
 @NgModule({

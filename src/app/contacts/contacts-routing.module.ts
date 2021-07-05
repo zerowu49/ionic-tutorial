@@ -7,14 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: ContactsPage
-  },
-  {
-    path: 'add-contact',
-    loadChildren: () => import('./add-contact/add-contact.module').then(m => m.AddContactPageModule)
-  },
-  {
-    path: 'edit-contact/:contactId',
-    loadChildren: () => import('./edit-contact/edit-contact.module').then(m => m.EditContactPageModule)
   }
 ];
 

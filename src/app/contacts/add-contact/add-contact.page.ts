@@ -41,7 +41,8 @@ export class AddContactPage implements OnInit {
 
   addContact() {
     this.presentLoading().then(() => {
-      this.router.navigateByUrl('/contacts')
+      console.log("redirecing...")
+      this.router.navigateByUrl('/contacts/index')
       this.presentToast()
     })
   }
@@ -50,6 +51,7 @@ export class AddContactPage implements OnInit {
     const toast = await this.toastCtrl.create({
       message: "Contact has been added.",
       duration: 3000,
+      color: "success",
     })
 
     toast.present()

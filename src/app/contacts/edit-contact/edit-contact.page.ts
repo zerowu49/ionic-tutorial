@@ -3,7 +3,6 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
 import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
 
@@ -69,7 +68,7 @@ export class EditContactPage implements OnInit {
     this.contactsService.editContact(this.key, editContact).then(res => {
       console.log(res)
       this.presentLoading().then(() => {
-        this.router.navigate(['/contacts']);
+        this.router.navigateByUrl('/contacts/index')
         this.presentToast();
       });
     })

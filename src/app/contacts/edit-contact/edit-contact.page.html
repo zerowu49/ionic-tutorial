@@ -10,27 +10,28 @@
 <ion-content>
   <form #f="ngForm" (ngSubmit)="onSubmit(f)">
     <ion-list>
-      <ion-item color="secondary">
+      <ion-item>
         <ion-label position="floating">Name</ion-label>
         <ion-input type="text" ngModel name="name"></ion-input>
       </ion-item>
-      <ion-item color="secondary">
+      <ion-item>
         <ion-label position="floating">Telephone 1</ion-label>
         <ion-input type="text" ngModel name="telephone1"></ion-input>
       </ion-item>
-      <ion-item color="secondary">
+      <ion-item>
         <ion-label position="floating">Telephone 2</ion-label>
         <ion-input type="text" ngModel name="telephone2"></ion-input>
       </ion-item>
-      <ion-item color="secondary">
+      <ion-item>
         <ion-label position="floating">E-mail 1</ion-label>
         <ion-input type="text" ngModel name="email1"></ion-input>
       </ion-item>
-      <ion-item color="secondary">
+      <ion-item>
         <ion-label position="floating">E-mail 2</ion-label>
         <ion-input type="text" ngModel name="email2"></ion-input>
       </ion-item>
     </ion-list>
+    <div #map id="map"></div>
     <ion-button type="submit" color="primary" expand="block">Submit</ion-button>
   </form>
 </ion-content>

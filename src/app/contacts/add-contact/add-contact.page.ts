@@ -1,16 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
 
+declare var google: any
 @Component({
   selector: 'app-add-contact',
   templateUrl: './add-contact.page.html',
   styleUrls: ['./add-contact.page.scss'],
 })
 export class AddContactPage implements OnInit {
+  map: any;
+  marker: any;
+  infoWindow: any = new google.maps.InfoWindow();
+  lokasi: Geolocation = null;
+  umnPos: any = {
+    lat: -6.256081,
+    lng: 106.618755
+  };
+
+  @ViewChild('map', {
+    read: ElementRef,
+    static: false
+  }) mapRef: ElementRef;
 
   constructor(
     private contactsService: ContactsService,
@@ -22,12 +36,58 @@ export class AddContactPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewDidEnter() {
+    this.showMap(this.umnPos);
+  }
+
+  showMap(pos: any) {
+    const location = new google.maps.LatLng(pos.lat, pos.lng);
+    const options = {
+      center: location,
+      zoom: 10,
+      disableDefaultUI: true
+    };
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement, options);
+
+    // Create initial info window
+    this.infoWindow = new google.maps.InfoWindow({
+      content: 'Click the map to get lat/lng',
+      position: this.umnPos
+    });
+    this.infoWindow.open(this.map);
+
+    // Configure click event listener.
+    this.map.addListener('click', (mapsMouseEvent) => {
+      // Close the current infoWindow.
+      this.infoWindow.close();
+
+      // Create a new InfoWindow.
+      this.infoWindow = new google.maps.InfoWindow({
+        position: mapsMouseEvent.latLng
+      });
+      this.infoWindow.setContent(
+        JSON.stringify(mapsMouseEvent.latLng.toJSON())
+      );
+      console.log(mapsMouseEvent.latLng.toJSON());
+      this.lokasi = mapsMouseEvent.latLng.toJSON();
+      this.infoWindow.open(this.map);
+    });
+  }
+
   onSubmit(form: NgForm) {
+    const tempat = {
+      lat: -6.865435565500417,
+      lng: 106.51457384234212
+    }
+
     const newContact = new Contact(
       null,
       form.value.name,
       [form.value.email1, form.value.email2],
       [form.value.telephone1, form.value.telephone2],
+      this.lokasi,
+      // tempat,
     )
 
     console.log(newContact)

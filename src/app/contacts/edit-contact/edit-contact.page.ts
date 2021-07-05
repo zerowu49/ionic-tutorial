@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { LoadingController, ToastController } from '@ionic/angular';
 import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
 
+declare var google: any
 @Component({
   selector: 'app-edit-contact',
   templateUrl: './edit-contact.page.html',
@@ -14,8 +15,15 @@ import { ContactsService } from '../contacts.service';
 export class EditContactPage implements OnInit {
   loadedContact: any
   key: string
+  map: any;
+  marker: any;
+  infoWindow: any = new google.maps.InfoWindow();
 
   @ViewChild('f', {}) f: NgForm
+  @ViewChild('map', {
+    read: ElementRef,
+    static: false
+  }) mapRef: ElementRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -37,10 +45,7 @@ export class EditContactPage implements OnInit {
 
         this.db.object('/contact/' + key).valueChanges()
           .subscribe(contact => {
-            console.log(contact)
             this.loadedContact = contact
-            console.log('this.loadedContact: ', this.loadedContact);
-
           })
       }
     )
@@ -53,10 +58,33 @@ export class EditContactPage implements OnInit {
         telephone1: this.loadedContact.phone[0],
         telephone2: this.loadedContact.phone[1]
       });
+      if (this.loadedContact.lokasi) {
+        this.showMap(this.loadedContact.lokasi);
+      }
     })
 
   }
 
+  showMap(pos: any) {
+    console.log("lokasi:", pos);
+    const location = new google.maps.LatLng(pos.lat, pos.lng);
+    const options = {
+      center: location,
+      zoom: 13,
+      disableDefaultUI: true
+    };
+
+    console.log(this.mapRef.nativeElement);
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement, options);
+
+    this.marker = new google.maps.Marker({
+      position: this.loadedContact.lokasi,
+      map: this.map,
+      draggable: true,
+      title: 'Drag me!'
+    });
+  }
 
   onSubmit(form: NgForm) {
     const editContact = new Contact(
@@ -64,6 +92,7 @@ export class EditContactPage implements OnInit {
       form.value.name,
       [form.value.email1, form.value.email2],
       [form.value.telephone1, form.value.telephone2],
+      this.marker.position.toJSON()
     );
     this.contactsService.editContact(this.key, editContact).then(res => {
       console.log(res)

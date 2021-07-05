@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { Contact } from './contact.model';
@@ -10,7 +9,6 @@ export class ContactsService {
   private dbPath = '/contact'
   contactRef: AngularFireList<Contact> = null
   constructor(
-    private http: HttpClient,
     private db: AngularFireDatabase,
   ) {
     this.contactRef = db.list(this.dbPath)

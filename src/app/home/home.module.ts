@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CurrentLocPageRoutingModule } from './current-loc-routing.module';
+import { HomePageRoutingModule } from './home-routing.module';
 
-import { CurrentLocPage } from './current-loc.page';
+import { HomePage } from './home.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CurrentLocPageRoutingModule
+    HomePageRoutingModule
   ],
-  declarations: [CurrentLocPage]
+  declarations: [HomePage]
 })
-export class CurrentLocPageModule {}
+export class HomePageModule {}

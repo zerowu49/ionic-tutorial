@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button (click)="getPicture('camera')" size="small">
+    <ion-icon slot="start" name="camera"></ion-icon>
+    <ion-label>Camera</ion-label>
+  </ion-button>
+  <ion-button (click)="getPicture('gallery')" size="small">
+    <ion-icon slot="start" name="image"></ion-icon>
+    <ion-label>Gallery</ion-label>
+  </ion-button>
+  <input type="file" *ngIf="isDesktop" #filePicker (change)="onFileChoose($event)">
+  <ion-card *ngIf="photo">
+    <ion-card-content>
+      <img [src]="photo">
+    </ion-card-content>
+  </ion-card>
+</ion-content>

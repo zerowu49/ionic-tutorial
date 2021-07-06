@@ -25,16 +25,8 @@ const routes: Routes = [
     loadChildren: () => import('./contacts/edit-contact/edit-contact.module').then(m => m.EditContactPageModule),
   },
   {
-    path: 'display-map',
-    loadChildren: () => import('./display-map/display-map.module').then(m => m.DisplayMapPageModule)
-  },
-  {
-    path: 'current-loc',
-    loadChildren: () => import('./current-loc/current-loc.module').then(m => m.CurrentLocPageModule)
-  },
-  {
-    path: 'loc-coordinate',
-    loadChildren: () => import('./loc-coordinate/loc-coordinate.module').then(m => m.LocCoordinatePageModule)
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
 ];
 

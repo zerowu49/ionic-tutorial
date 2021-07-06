@@ -1,45 +1,59 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
-import { Platform, ToastController } from '@ionic/angular';
-import { Capacitor } from '@capacitor/core';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { NavController, ToastController } from '@ionic/angular';
+import { AuthService } from '../auth.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.page.html',
+  styleUrls: ['./dashboard.page.scss'],
 })
-export class HomePage implements OnInit {
-  @ViewChild('filePicker',{static: false}) filePickerRef: ElementRef<HTMLInputElement>
+export class DashboardPage implements OnInit {
+  userEmail: string;
   photo: SafeResourceUrl
-  isDesktop: boolean
 
   constructor(
-    private platform: Platform,
-    private storage: AngularFireStorage,
-    private toastCtrl: ToastController,
-  ) {
-    const ref = this.storage.ref('photos/latestPhoto.jpg');
-    ref.getDownloadURL().subscribe(res => {
-      console.log('res', res);
-      this.photo = res;
-    });
+      private navCtrl: NavController,
+      private storage: AngularFireStorage,
+      private authService: AuthService,
+      private toastCtrl: ToastController,
+  ) { 
   }
 
   ngOnInit() {
-    if((this.platform.is('mobile') && this.platform.is('hybrid')) || 
-      this.platform.is('desktop')){
-        this.isDesktop = true
-    }
+    this.authService.userDetails().subscribe(res => {
+      console.log('res', res);
+      // set user email and fetch profile image
+      if (res !== null) {
+        this.userEmail = res.email;
+        const ref = this.storage.ref(`profile/${this.userEmail}.jpg`);
+        ref.getDownloadURL().subscribe(res => {
+          console.log('res', res);
+          this.photo = res;
+        });
+      } else {
+        this.navCtrl.navigateBack('auth/login');
+      }
+    }, err => {
+      console.log('err', err);
+    });
+
   }
 
-  async getPicture(type: string) {
-    if (!Capacitor.isPluginAvailable('Camera') || (this.isDesktop && type === 'gallery')) {
-      this.filePickerRef.nativeElement.click();
-      return;
-    }
+  logout() {
+    this.authService.logoutUser()
+        .then(res => {
+          console.log(res);
+          this.navCtrl.navigateBack('auth/login');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+  }
 
+  async getPicture() {
     const image = await Camera.getPhoto({
       quality: 100,
       width: 400,
@@ -52,23 +66,6 @@ export class HomePage implements OnInit {
     // this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
     this.photo = image.dataUrl
     console.log("this.photo: ", this.photo)
-  }
-
-  onFileChoose(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    const pattern = /image-*/;
-    const reader = new FileReader();
-
-    if (!file.type.match(pattern)) {
-      console.log('File format not supported');
-      return;
-    }
-
-    reader.onload = () => {
-      this.photo = reader.result.toString();
-    };
-
-    reader.readAsDataURL(file);
   }
 
   dataURLtoFile(dataUrl,filename){
@@ -98,7 +95,7 @@ export class HomePage implements OnInit {
     }
     const file = this.dataURLtoFile(this.photo, 'file')
     console.log(file)
-    const filePath = 'photos/latestPhoto.jpg'
+    const filePath = `profile/${this.userEmail}.jpg`
     const ref = this.storage.ref(filePath);
     ref.put(file).then(() => {
       this.toastCtrl.create({
@@ -118,4 +115,5 @@ export class HomePage implements OnInit {
       })
     });
   }
+
 }

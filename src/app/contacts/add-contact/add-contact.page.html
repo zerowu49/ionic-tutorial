@@ -43,6 +43,18 @@
       </ion-item>
     </ion-list>
     <div #map id="map"></div>
+    <ion-item>
+      <ion-label position="fixed">Photo</ion-label>
+      <ion-button size="small" (click)="getPicture()">
+        <ion-icon name="camera" slot="start"></ion-icon>
+        <ion-label>Choose Photo</ion-label>
+      </ion-button>
+    </ion-item>
+    <ion-card *ngIf="photo">
+      <ion-card-content>
+        <img [src]="photo">
+      </ion-card-content>
+    </ion-card>
     <ion-button type="submit" expand="block" (click)="addContact()" [disabled]="!form.valid">
       Submit
     </ion-button>

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 declare var google: any
 @Component({
@@ -18,6 +19,10 @@ export class EditContactPage implements OnInit {
   map: any;
   marker: any;
   infoWindow: any = new google.maps.InfoWindow();
+  posisi: any
+
+  photo: any;
+  photoBase64: any;
 
   @ViewChild('f', {}) f: NgForm
   @ViewChild('map', {
@@ -56,10 +61,13 @@ export class EditContactPage implements OnInit {
         email1: this.loadedContact.email[0],
         email2: this.loadedContact.email[1],
         telephone1: this.loadedContact.phone[0],
-        telephone2: this.loadedContact.phone[1]
+        telephone2: this.loadedContact.phone[1],
       });
       if (this.loadedContact.lokasi) {
         this.showMap(this.loadedContact.lokasi);
+      }
+      if (this.loadedContact.photo) {
+        this.photo = this.loadedContact.photo;
       }
     })
 
@@ -87,12 +95,19 @@ export class EditContactPage implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    if(this.marker != undefined || this.marker != null ){
+      this.posisi = this.marker.position.toJSON()
+    }else{
+      console.log("else")
+      this.posisi = null
+    }
     const editContact = new Contact(
       null,
       form.value.name,
       [form.value.email1, form.value.email2],
       [form.value.telephone1, form.value.telephone2],
-      this.marker.position.toJSON()
+      this.posisi,
+      this.photo,
     );
     this.contactsService.editContact(this.key, editContact).then(res => {
       console.log(res)
@@ -124,6 +139,20 @@ export class EditContactPage implements OnInit {
 
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');
+  }
+
+  async getPicture() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      width: 400,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Prompt
+    });
+
+    this.photoBase64 = image.base64String;
+    this.photo = 'data:image/png;base64,' + image.base64String;
+    console.log(this.photo);
   }
 
 }

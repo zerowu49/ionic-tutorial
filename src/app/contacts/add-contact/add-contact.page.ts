@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
@@ -20,6 +21,9 @@ export class AddContactPage implements OnInit {
     lat: -6.256081,
     lng: 106.618755
   };
+
+  photo: any = "";
+  photoBase64: any;
 
   @ViewChild('map', {
     read: ElementRef,
@@ -80,6 +84,7 @@ export class AddContactPage implements OnInit {
       lat: -6.865435565500417,
       lng: 106.51457384234212
     }
+    console.log(this.photo);
 
     const newContact = new Contact(
       null,
@@ -87,7 +92,7 @@ export class AddContactPage implements OnInit {
       [form.value.email1, form.value.email2],
       [form.value.telephone1, form.value.telephone2],
       this.lokasi,
-      // tempat,
+      this.photo,
     )
 
     console.log(newContact)
@@ -127,5 +132,19 @@ export class AddContactPage implements OnInit {
 
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');
+  }
+
+  async getPicture() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      width: 400,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Prompt
+    });
+
+    this.photoBase64 = image.base64String;
+    this.photo = 'data:image/png;base64,' + image.base64String;
+    console.log(this.photo);
   }
 }

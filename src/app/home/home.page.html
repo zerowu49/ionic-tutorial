@@ -14,6 +14,12 @@
     <ion-label>Gallery</ion-label>
   </ion-button>
   <input type="file" *ngIf="isDesktop" #filePicker (change)="onFileChoose($event)">
+
+  <ion-button (click)="upload()" size="small">
+    <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+    <ion-label>Upload</ion-label>
+  </ion-button>
+
   <ion-card *ngIf="photo">
     <ion-card-content>
       <img [src]="photo">
